@@ -1,0 +1,104 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[english,russian]{babel}
+\usepackage[left=2cm,right=1cm,top=1cm,bottom=1cm]{geometry}
+\usepackage{
+	amsmath, amssymb, % math
+	float, % for table captions
+	hyperref, % fancy links
+	listings, % sources
+	graphicx, % pictures
+	mathtools,xparse, % for norm, normL
+	dutchcal, % lowercase mathcal font
+	empheq, % boxed eqns
+	titlesec, % subsectioning
+	pdflscape, % portrait landscape (for large tables)
+%	arydshln, % fancy lines for tables
+	booktabs, % toprule, midrule, … for tables
+	bm % bold for everything
+}
+\usepackage[dvipsnames]{xcolor} % fancy colors
+
+\hypersetup{
+	colorlinks,
+	linkcolor={blue!60!black},
+	citecolor={blue!60!black},
+	urlcolor={blue!70!black}
+}
+
+\lstset{
+	texcl,
+	escapechar=`,
+	escapebegin=\lst@commentstyle,
+    basicstyle=\small\ttfamily\color{black},
+    keywordstyle=\color{green!40!black},
+    emphstyle=\bfseries\color{green!40!black},
+    commentstyle=\itshape\color{purple!40!black},
+    identifierstyle=\color{blue!30!black},
+    showstringspaces=false,
+    stringstyle=\color{orange},
+    numbers=left,
+    tabsize=2,
+    breaklines=true,
+    breakatwhitespace=true
+}
+
+% table captions
+\restylefloat{table}
+\let\oldtabular\tabular
+\renewcommand{\tabular}{\footnotesize\oldtabular}
+
+% roman numbering for sections
+\renewcommand{\thesection}{\Roman{section}}
+% paragraph subsectioning
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\renewcommand{\theparagraph}{\thesubsubsection.\alph{paragraph}}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4} % table of contents   
+
+% norms
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\NewDocumentCommand{\normL}{ s O{} m }{%
+	\IfBooleanTF{#1}{\norm*{#3}}{\norm[#2]{#3}}_{L_2(\Omega)}%
+}
+
+% differentials
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+\newcommand*\Diff[1]{\mathop{}\!\mathrm{d^#1}}
+
+% span{…}, area, length
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\area}{area \, of}
+\DeclareMathOperator{\length}{length \, of}
+
+% bold vectors
+\newcommand{\vect}[1]{\boldsymbol{\mathbf{#1}}}
+
+\begin{document}
+    \input{title}
+    \tableofcontents
+    \thispagestyle{empty} % no page num. on table of contents
+    \newpage
+    \listoffigures
+    \listoftables
+	\thispagestyle{empty} % no page num. on table of contents
+    \newpage
+    \newgeometry{ % geometry for the rest pages
+    	left=2cm,
+    	right=1cm,
+    	top=1cm,
+    	bottom=1cm,
+    	includefoot,
+    	heightrounded
+    }
+    % main parts
+    \input{steadyState}
+    \input{timeDependent}
+    \newpage
+    \input{bibliography}
+\end{document} 
